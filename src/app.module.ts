@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { getMetadataArgsStorage } from 'typeorm';
+import { CatalogModule } from './catalog/catalog.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { getMetadataArgsStorage } from 'typeorm';
     }),
     UsersModule,
     AuthModule,
+    CatalogModule,
   ],
   controllers: [AppController],
   providers: [AppService],

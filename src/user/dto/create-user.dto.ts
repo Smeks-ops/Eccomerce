@@ -1,10 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsDefined,
+  IsEmail,
+  IsEnum,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+import { UserType } from '../entities/users.entity';
 
 export class CreateUserDto {
   @ApiProperty()
-  @IsEmail()
-  email: string;
+  @IsString()
+  username: string;
 
   @ApiProperty()
   @MinLength(8)
@@ -13,4 +22,9 @@ export class CreateUserDto {
     message: 'password is too weak',
   })
   password: string;
+
+  @ApiProperty({ default: UserType.BUYER })
+  @IsEnum(UserType)
+  @IsDefined()
+  type: UserType;
 }

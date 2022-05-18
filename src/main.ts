@@ -24,8 +24,8 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api/v1');
   const config = new DocumentBuilder()
-    .setTitle('Ose-s e-commerce API Server')
-    .setDescription('Ose-s e-commerce API Server Documentation')
+    .setTitle('Oses e-commerce API Server')
+    .setDescription('Oses e-commerce API Server Documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

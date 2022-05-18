@@ -22,7 +22,7 @@ export class AuthService {
     // use the id and email of the logged-in user to create a token
     const payload = {
       id: user.id,
-      email: user.email,
+      username: user.username,
     };
 
     return {
@@ -31,8 +31,8 @@ export class AuthService {
   }
 
   async validateUser(authLoginDto: AuthLoginDto): Promise<User> {
-    const { email, password } = authLoginDto;
-    const user = await this.usersService.findByEmail(email);
+    const { username, password } = authLoginDto;
+    const user = await this.usersService.findByUsername(username);
     if (user === undefined) throw new NotFoundException();
     if (!(await user?.validatePassword(password))) {
       throw new UnauthorizedException();

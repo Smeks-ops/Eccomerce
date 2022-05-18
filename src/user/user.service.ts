@@ -15,19 +15,21 @@ export class UsersService {
 
   async createUser(createUserDto: CreateUserDto) {
     // check if the email already exists
-    const isExist = await this.findByEmail(createUserDto.email);
+    const isExist = await this.findByUsername(createUserDto.username);
     if (isExist) throw new BadRequestException('Email already exists');
 
     const createUserPayload = new User();
-    createUserPayload.email = createUserDto.email;
+    createUserPayload.username = createUserDto.username;
     createUserPayload.password = createUserDto.password;
+    createUserPayload.type = createUserDto.type;
 
     const result = await this.userRepository.save(createUserPayload);
 
-    // use the id and email of the registered user to create a token
+    // use the id, username and user type of the registered user to create a token
     const payload = {
       id: result.id,
-      email: result.email,
+      username: result.username,
+      userType: result.type,
     };
 
     return {
@@ -39,10 +41,10 @@ export class UsersService {
     return await User.findOne(id);
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findByUsername(username: string): Promise<User> {
     return await User.findOne({
       where: {
-        email: email,
+        username: username,
       },
     });
   }
