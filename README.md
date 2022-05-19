@@ -1,6 +1,6 @@
 # Ose-s e-commerce Server
 
-## API Doc - https://oses-todo-app.herokuapp.com/api/v1/docs/
+## API Doc - https://oses-ecommerce.herokuapp.com/
 
 ## HEROKU Link
 
