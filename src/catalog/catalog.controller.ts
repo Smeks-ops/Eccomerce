@@ -30,6 +30,6 @@ export class CatalogController {
 
   async handleRestriction(user: User) {
     if (user.type === 'buyer')
-      throw new BadRequestException('Only a seller can perform this action');
+      throw new BadRequestException('Only a seller can perform this action.');
   }
 }
