@@ -3,5 +3,5 @@ import { Expose } from 'class-transformer';
 export class Token {
   @Expose()
   @ApiProperty()
-  access_token: string;
+  accessToken: string;
 }

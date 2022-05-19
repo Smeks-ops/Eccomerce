@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 import { User } from '../user/entities/users.entity';
 
 import { UsersService } from '../user/user.service';
@@ -23,10 +24,17 @@ export class AuthService {
     const payload = {
       id: user.id,
       username: user.username,
+      type: user.type,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     };
 
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '24h',
+    });
+
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 
@@ -38,5 +46,9 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     return user;
+  }
+
+  async createUser(createUserDto: CreateUserDto) {
+    return this.usersService.createUser(createUserDto);
   }
 }

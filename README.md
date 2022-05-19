@@ -47,9 +47,27 @@ $ .../api/v1/docs/#/
 $ .../api/v1/docs/#/default/AppController_getHello
 
 # user sign up
-$ ...api/v1/docs/#/user/UsersController_createUser
+$ .../api/v1/auth/register
 
 # user login
-$ .../api/v1/docs/#/auth/AuthController_login
+$ .../api/v1/docs/#/auth/AuthController_createUser
+
+# list of all sellers for buyer
+$ .../api/v1/docs/#/user/UsersController_getAllSellers
+
+# gets seller-catalog based on seller id
+$ .../api/v1/docs/#/user/UsersController_getSellerById
+
+# creates order for buyer
+$ .../api/v1/docs/#/user/UsersController_selectProductFromCatalog
+
+# list orders for a seller
+$ .../api/v1/docs/#/user/UsersController_getAllOrdersForASeller
+
+# creates catalog for a seller 
+$ .../api/v1/docs/#/catalog/CatalogController_create
+
+# creates a product for a seller
+$ .../api/v1/docs/#/product/ProductController_create
 
 ```

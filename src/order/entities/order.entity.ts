@@ -4,21 +4,25 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Product } from '../../product/entities/product.entity';
 
 @Entity()
-export class Catalog {
+export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'boolean', nullable: true, default: false })
   isDeleted?: boolean;
 
-  @OneToOne(() => User, (user) => user.myCatalog, { eager: true })
+  @ManyToOne(() => User, (user) => user.myOrders, { eager: true })
+  @JoinColumn({ name: 'buyer_id' })
+  createdBy: User;
+
+  @ManyToOne(() => User, (user) => user.buyers, { eager: true })
   @JoinColumn({ name: 'seller_id' })
   seller: User;
 

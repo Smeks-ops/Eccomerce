@@ -1,9 +1,17 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CatalogService } from '../catalog/catalog.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/users.entity';
+import { User, UserType } from './entities/users.entity';
+import { CreateCatalogDto } from '../catalog/dto/create-catalog.dto';
+import { OrderService } from '../order/order.service';
 
 @Injectable()
 export class UsersService {
@@ -11,6 +19,8 @@ export class UsersService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private catalogService: CatalogService,
+    private orderService: OrderService,
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
@@ -29,11 +39,17 @@ export class UsersService {
     const payload = {
       id: result.id,
       username: result.username,
-      userType: result.type,
+      type: result.type,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
     };
 
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '24h',
+    });
+
     return {
-      access_token: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 
@@ -42,10 +58,39 @@ export class UsersService {
   }
 
   async findByUsername(username: string): Promise<User> {
-    return await User.findOne({
+    return this.userRepository.findOne({
       where: {
         username: username,
       },
     });
+  }
+
+  async getAllSellers(): Promise<User[]> {
+    return this.userRepository.find({
+      where: {
+        type: UserType.SELLER,
+      },
+    });
+  }
+
+  async getSellerById(sellerId: string) {
+    return this.catalogService.findBySellerId(sellerId);
+  }
+
+  async selectProductFromCatalog(
+    sellerId: string,
+    createCatalogDto: CreateCatalogDto,
+    user: User,
+  ) {
+    const { productId } = createCatalogDto;
+    return this.catalogService.selectProductFromCatalog(
+      sellerId,
+      productId,
+      user,
+    );
+  }
+
+  async getAllOrdersForASeller(user: User) {
+    return this.orderService.getAllOrdersForASeller(user);
   }
 }

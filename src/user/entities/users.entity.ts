@@ -4,11 +4,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Catalog } from '../../catalog/entities/catalog.entity';
+import { Order } from '../../order/entities/order.entity';
+import { Product } from '../../product/entities/product.entity';
 
 export enum UserType {
   BUYER = 'buyer',
@@ -33,8 +37,6 @@ export class User extends BaseEntity {
   })
   type: UserType;
 
-  // userType: string;
-
   @Column()
   @CreateDateColumn()
   createdAt: Date;
@@ -51,4 +53,16 @@ export class User extends BaseEntity {
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
   }
+
+  @OneToOne(() => Catalog, (catalog) => catalog.seller)
+  myCatalog: Catalog;
+
+  @OneToMany(() => Order, (order) => order.createdBy)
+  myOrders: Order[];
+
+  @OneToMany(() => Order, (order) => order.seller)
+  buyers: Order[];
+
+  @OneToMany(() => Product, (product) => product.seller)
+  myProducts: Product[];
 }

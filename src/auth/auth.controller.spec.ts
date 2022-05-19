@@ -30,11 +30,11 @@ describe('AuthController', () => {
   describe('login', () => {
     it('should login a user and return a token', async () => {
       const result = {
-        access_token: 'eyJhbGciOiJIUzI',
+        accessToken: 'eyJhbGciOiJIUzI',
       };
 
       const payload = {
-        email: 'test@mail.com',
+        username: 'tes',
         password: 'test_password',
       };
 

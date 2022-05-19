@@ -8,7 +8,16 @@ describe('CatalogController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CatalogController],
-      providers: [CatalogService],
+      providers: [
+        {
+          provide: CatalogService,
+          useValue: {
+            create: jest.fn(),
+            findBySellerId: jest.fn(),
+            selectProductFromCatalog: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<CatalogController>(CatalogController);

@@ -4,6 +4,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/users.entity';
 import { UsersService } from './user.service';
+import { OrderService } from '../order/order.service';
+import { CatalogService } from '../catalog/catalog.service';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -18,6 +20,18 @@ describe('UsersService', () => {
         },
         {
           provide: JwtService,
+          useValue: {
+            sign: jest.fn(),
+          },
+        },
+        {
+          provide: CatalogService,
+          useValue: {
+            sign: jest.fn(),
+          },
+        },
+        {
+          provide: OrderService,
           useValue: {
             sign: jest.fn(),
           },

@@ -1,10 +1,13 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { UsersController } from './user.controller';
 import { User } from './entities/users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CatalogModule } from '../catalog/catalog.module';
+import { AuthModule } from '../auth/auth.module';
+import { OrderModule } from 'src/order/order.module';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    CatalogModule,
+    forwardRef(() => AuthModule),
+    forwardRef(() => OrderModule),
   ],
   controllers: [UsersController],
   providers: [UsersService],

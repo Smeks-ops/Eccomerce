@@ -2,30 +2,30 @@ import {
   Controller,
   Post,
   Body,
-  UseGuards,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
-import { CatalogService } from './catalog.service';
-import { CreateCatalogDto } from './dto/create-catalog.dto';
+import { ProductService } from './product.service';
+import { CreateProductDto } from './dto/create-product.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { AuthUser } from '../auth/auth.decorator';
 import { User } from '../user/entities/users.entity';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 
-@ApiTags('catalog')
 @ApiBearerAuth()
-@Controller('catalog')
+@ApiTags('product')
+@Controller('product')
 @UseGuards(JwtAuthGuard)
-export class CatalogController {
-  constructor(private readonly catalogService: CatalogService) {}
+export class ProductController {
+  constructor(private readonly productService: ProductService) {}
 
-  @Post('seller/create-catalog')
+  @Post()
   async create(
-    @Body() createCatalogDto: CreateCatalogDto,
+    @Body() createProductDto: CreateProductDto,
     @AuthUser() user: User,
   ) {
     await this.handleRestriction(user);
-    return this.catalogService.create(createCatalogDto, user);
+    return this.productService.create(createProductDto);
   }
 
   async handleRestriction(user: User) {

@@ -4,30 +4,28 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Product } from '../../product/entities/product.entity';
 
 @Entity()
-export class Catalog {
+export class Product {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ type: 'varchar', length: 300, nullable: false })
+  name: string;
+
+  @Column({ type: 'int', width: 10, nullable: true })
+  price: number;
 
   @Column({ type: 'boolean', nullable: true, default: false })
   isDeleted?: boolean;
 
-  @OneToOne(() => User, (user) => user.myCatalog, { eager: true })
+  @ManyToOne(() => User, (user) => user.myProducts, { eager: true })
   @JoinColumn({ name: 'seller_id' })
   seller: User;
-
-  @Column({
-    type: 'jsonb',
-    default: () => "'[]'",
-    nullable: false,
-  })
-  products: Product[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

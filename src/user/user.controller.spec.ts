@@ -26,23 +26,4 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
-  describe('createUser', () => {
-    it('should create a user and return a token', async () => {
-      const result = {
-        access_token: 'eyJhbGciOiJIUzI',
-      };
-
-      const payload = {
-        email: 'test@mail.com',
-        password: 'test_password',
-      };
-
-      jest.spyOn(service, 'createUser').mockImplementation(async () => result);
-
-      jest.enableAutomock();
-
-      expect(await controller.createUser(payload)).toEqual(result);
-    });
-  });
 });
